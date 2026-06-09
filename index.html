@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" style="scroll-behavior:smooth;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESCAPE CLOTHING 👣 | Premium Streetwear India</title>
+  <meta name="description" content="Premium dark streetwear brand. Shop hoodies, jerseys, oversized tees, cargos & more. 3 for ₹999 drop available now. PAN India delivery." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: '#131313',
+            surface: '#111111',
+            'surface-container': '#201f1f',
+            'surface-elevated': '#111111',
+            accent: '#FF3B30',
+            'text-primary': '#FFFFFF',
+            'text-muted': '#888888',
+            outline: '#8e9192',
+            'outline-variant': '#444748',
+            border: '#444748',
+          },
+          fontFamily: {
+            heading: ['"Bebas Neue"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+          borderRadius: { sharp: '2px' },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #131313;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      opacity: 0;
+      animation: fadeIn 400ms ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* ── Fonts ── */
+    .font-heading { font-family: 'Bebas Neue', sans-serif; }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 600ms cubic-bezier(0.22,1,0.36,1),
+                  transform 600ms cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Scrollbar hide ── */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ── Pulse ring ── */
+    @keyframes ping {
+      0%   { transform: scale(1); opacity: .6; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #25D366;
+      animation: ping 2s ease-out infinite;
+      z-index: -1;
+    }
+
+    /* ── Bounce arrow ── */
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(10px); }
+    }
+    .bounce-anim { animation: bounce 1.6s ease-in-out infinite; }
+
+    /* ── Countdown ── */
+    .timer-sep { font-family:'Bebas Neue',sans-serif; font-size:36px; color:#fff; line-height:1; align-self:flex-start; padding-top:8px; }
+
+    /* ── Category card grayscale ── */
+    .cat-img { filter: grayscale(100%); transition: filter 700ms ease, transform 700ms ease; }
+    .cat-card:hover .cat-img { filter: grayscale(0%); transform: scale(1.10); }
+    .cat-img-color { filter: grayscale(0%); transition: filter 700ms ease, transform 700ms ease; }
+    .cat-card:hover .cat-img-color { transform: scale(1.10); }
+
+    /* ── Add-to-cart slide ── */
+    .atc-btn {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: #fff; color: #000;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 16px 0; text-align: center;
+      transform: translateY(100%);
+      transition: transform 300ms ease;
+      cursor: pointer;
+      border: none;
+    }
+    .prod-card:hover .atc-btn { transform: translateY(0); }
+
+    /* ── Instagram overlay ── */
+    .ig-cell:hover .ig-overlay { opacity: 1; }
+    .ig-cell:hover .ig-img { transform: scale(1.05); }
+    .ig-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.50);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 400ms ease;
+    }
+    .ig-img { transition: transform 400ms ease; }
+
+    /* ── Reviews scroll ── */
+    .reviews-track { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 8px; }
+
+    /* ── WhatsApp float ── */
+    #wa-btn {
+      position: fixed; bottom: 24px; right: 24px; z-index: 100;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #25D366;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.40);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 300ms ease, box-shadow 300ms ease;
+      cursor: pointer; border: none; text-decoration: none;
+    }
+    #wa-btn:hover {
+      transform: scale(1.10);
+      box-shadow: 0 8px 32px rgba(37,211,102,0.60);
+    }
+
+    /* ── Nav active ── */
+    .nav-active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+    .nav-link { color: #8e9192; transition: color 200ms; }
+    .nav-link:hover { color: #fff; }
+
+    /* ── Input focus ── */
+    input:focus { outline: none; border-color: #fff !important; }
+
+    /* ── Footer link ── */
+    .footer-link { color: #8e9192; transition: color 200ms; font-size: 14px; }
+    .footer-link:hover { color: #fff; }
+
+    /* ── Cart badge ── */
+    .cart-badge {
+      position: absolute; top: -6px; right: -6px;
+      background: #FF3B30; color: #fff;
+      font-size: 10px; font-weight: 700;
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── Noise overlay on 999 section ── */
+    .noise-bg {
+      background-color: #0D0D0D;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* ── Stagger children ── */
+    .stagger > *:nth-child(1) { transition-delay: 0ms; }
+    .stagger > *:nth-child(2) { transition-delay: 80ms; }
+    .stagger > *:nth-child(3) { transition-delay: 160ms; }
+    .stagger > *:nth-child(4) { transition-delay: 240ms; }
+    .stagger > *:nth-child(5) { transition-delay: 320ms; }
+    .stagger > *:nth-child(6) { transition-delay: 400ms; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header id="header" style="position:fixed;top:0;left:0;right:0;z-index:50;height:80px;background:rgba(19,19,19,0.80);backdrop-filter:blur(12px);border-bottom:1px solid #444748;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;height:100%;display:flex;align-items:center;justify-content:space-between;" class="px-5 lg:px-[64px]">
+
+    <!-- Left: Logo -->
+    <a href="#" style="display:flex;align-items:center;gap:12px;text-decoration:none;">
+      <img src="https://res.cloudinary.com/dsqxboxoc/image/upload/q_auto/f_auto/v1780928834/639473422_17856452319665295_1281961209085143497_n_mmtgqs.jpg"
+           alt="Escape Clothing" style="height:40px;width:40px;object-fit:cover;border-radius:2px;" />
+      <span class="font-heading hidden md:block" style="color:#fff;font-size:22px;letter-spacing:0.05em;text-transform:uppercase;">ESCAPE CLOTHING</span>
+    </a>
+
+    <!-- Center Nav -->
+    <nav class="hidden md:flex" style="gap:32px;align-items:center;">
+      <a href="#" class="nav-active font-body" style="font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;">NEW ARRIVALS</a>
+      <a href="#" class="nav-link font-body" style="font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;">JERSEYS</a>
+      <a href="#" class="nav-link font-body" style="font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;">OVERSIZED TEES</a>
+      <a href="#" class="nav-link font-body" style="font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;color:#FF3B30;">₹999 DROP</a>
+    </nav>
+
+    <!-- Right Icons -->
+    <div style="display:flex;align-items:center;gap:20px;">
+      <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        <span class="material-symbols-outlined" style="font-size:24px;">search</span>
+      </button>
+      <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        <span class="material-symbols-outlined" style="font-size:24px;">person</span>
+      </button>
+      <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" class="hidden md:block" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        <span class="material-symbols-outlined" style="font-size:24px;">favorite</span>
+      </button>
+      <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;position:relative;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        <span class="material-symbols-outlined" style="font-size:24px;">shopping_cart</span>
+        <span class="cart-badge">2</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1: HERO BANNER
+═══════════════════════════════════════════════ -->
+<section id="hero" style="height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+  <!-- BG Image -->
+  <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=1800&q=80"
+       alt="Hero Background"
+       style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;" />
+  <!-- Dark Overlay -->
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);"></div>
+
+  <!-- Content -->
+  <div style="position:relative;z-index:10;text-align:center;padding:0 20px;" class="reveal">
+    <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:6px;color:#FF3B30;text-transform:uppercase;margin-bottom:20px;">NEW COLLECTION</p>
+    <h1 class="font-heading" style="font-size:clamp(52px,8vw,96px);color:#fff;text-transform:uppercase;line-height:1;letter-spacing:-0.02em;margin-bottom:40px;">
+      ESCAPE THE<br/>ORDINARY
+    </h1>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="#"
+         style="background:#fff;color:#131313;padding:16px 40px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:opacity 200ms,transform 100ms;display:inline-block;"
+         onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'"
+         onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">SHOP NOW</a>
+      <a href="#arrivals"
+         style="background:transparent;border:1px solid #fff;color:#fff;padding:16px 40px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background 200ms;display:inline-block;"
+         onmouseover="this.style.background='rgba(255,255,255,0.10)'" onmouseout="this.style.background='transparent'">NEW ARRIVALS</a>
+    </div>
+  </div>
+
+  <!-- Scroll Arrow -->
+  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:10;" class="bounce-anim">
+    <span class="material-symbols-outlined" style="color:#fff;font-size:36px;">expand_more</span>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2: FEATURED CATEGORIES
+═══════════════════════════════════════════════ -->
+<section id="categories" style="padding:96px 0;background:#131313;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <h2 class="font-heading reveal" style="font-size:48px;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:48px;">CATEGORIES</h2>
+
+    <!-- Desktop Grid -->
+    <div class="hidden md:grid reveal stagger" style="grid-template-columns:repeat(5,1fr);gap:24px;">
+      <!-- JERSEYS -->
+      <div class="cat-card" style="position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1571019613576-2b22c76fd955?w=600&q=80" alt="Jerseys" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:24px;left:24px;font-size:32px;color:#fff;text-transform:uppercase;letter-spacing:0.02em;">JERSEYS</span>
+      </div>
+      <!-- OVERSIZED TEES -->
+      <div class="cat-card" style="position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&q=80" alt="Oversized Tees" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:24px;left:24px;font-size:32px;color:#fff;text-transform:uppercase;">OVERSIZED TEES</span>
+      </div>
+      <!-- SHIRTS -->
+      <div class="cat-card" style="position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=600&q=80" alt="Shirts" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:24px;left:24px;font-size:32px;color:#fff;text-transform:uppercase;">SHIRTS</span>
+      </div>
+      <!-- BOTTOMS -->
+      <div class="cat-card" style="position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1519811076734-4f8da9d1a2d7?w=600&q=80" alt="Bottoms" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:24px;left:24px;font-size:32px;color:#fff;text-transform:uppercase;">BOTTOMS</span>
+      </div>
+      <!-- ₹999 DROP -->
+      <div class="cat-card" style="position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img-color" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80" alt="999 Drop" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,59,48,0.10),rgba(0,0,0,0.80));transition:background 400ms;"></div>
+        <span class="font-heading" style="position:absolute;bottom:24px;left:24px;font-size:32px;color:#FF3B30;text-transform:uppercase;">₹999 DROP</span>
+      </div>
+    </div>
+
+    <!-- Mobile Horizontal Scroll -->
+    <div class="flex md:hidden no-scrollbar" style="overflow-x:auto;gap:16px;padding-bottom:8px;">
+      <div class="cat-card flex-shrink-0" style="position:relative;overflow:hidden;width:200px;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1571019613576-2b22c76fd955?w=400&q=80" alt="Jerseys" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:16px;left:16px;font-size:26px;color:#fff;text-transform:uppercase;">JERSEYS</span>
+      </div>
+      <div class="cat-card flex-shrink-0" style="position:relative;overflow:hidden;width:200px;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&q=80" alt="Oversized Tees" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:16px;left:16px;font-size:22px;color:#fff;text-transform:uppercase;">OVERSIZED TEES</span>
+      </div>
+      <div class="cat-card flex-shrink-0" style="position:relative;overflow:hidden;width:200px;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=400&q=80" alt="Shirts" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:16px;left:16px;font-size:26px;color:#fff;text-transform:uppercase;">SHIRTS</span>
+      </div>
+      <div class="cat-card flex-shrink-0" style="position:relative;overflow:hidden;width:200px;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img" src="https://images.unsplash.com/photo-1519811076734-4f8da9d1a2d7?w=400&q=80" alt="Bottoms" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:16px;left:16px;font-size:26px;color:#fff;text-transform:uppercase;">BOTTOMS</span>
+      </div>
+      <div class="cat-card flex-shrink-0" style="position:relative;overflow:hidden;width:280px;aspect-ratio:3/4;cursor:pointer;background:#201f1f;border-radius:2px;">
+        <img class="cat-img-color" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80" alt="999 Drop" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,59,48,0.10),rgba(0,0,0,0.80));"></div>
+        <span class="font-heading" style="position:absolute;bottom:16px;left:16px;font-size:26px;color:#FF3B30;text-transform:uppercase;">₹999 DROP</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3: NEW ARRIVALS
+═══════════════════════════════════════════════ -->
+<section id="arrivals" style="padding:96px 0;background:#111111;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <!-- Header Row -->
+    <div class="reveal" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <h2 class="font-heading" style="font-size:48px;color:#fff;text-transform:uppercase;line-height:1;">NEW ARRIVALS</h2>
+        <p style="font-size:14px;color:#8e9192;letter-spacing:0.05em;text-transform:uppercase;margin-top:8px;">LATEST FROM THE STREETS</p>
+      </div>
+      <a href="#" style="font-size:14px;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;border-bottom:1px solid #fff;padding-bottom:2px;transition:color 200ms,border-color 200ms;"
+         onmouseover="this.style.color='#8e9192';this.style.borderColor='#8e9192'" onmouseout="this.style.color='#fff';this.style.borderColor='#fff'">VIEW ALL</a>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 reveal stagger" style="gap:24px;">
+      <!-- Card 1 -->
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80" alt="Obsidian Hoodie" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#fff;color:#000;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">NEW</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">OBSIDIAN HOODIE</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹2,499</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80" alt="Acid Wash Tee" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#FF3B30;color:#fff;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">🔥 HOT</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">ACID WASH TEE</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹1,299</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80" alt="Technical Cargo" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">TECHNICAL CARGO</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹1,899</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1571019613576-2b22c76fd955?w=600&q=80" alt="Korean Jersey" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#fff;color:#000;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">NEW</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">KOREAN JERSEY</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹2,199</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4: BEST SELLERS
+═══════════════════════════════════════════════ -->
+<section id="bestsellers" style="padding:96px 0;background:#131313;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <div class="reveal" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px;">
+      <div>
+        <h2 class="font-heading" style="font-size:48px;color:#fff;text-transform:uppercase;line-height:1;">BEST SELLERS</h2>
+        <p style="font-size:14px;color:#8e9192;letter-spacing:0.05em;text-transform:uppercase;margin-top:8px;">FAN FAVOURITES</p>
+      </div>
+      <a href="#" style="font-size:14px;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;border-bottom:1px solid #fff;padding-bottom:2px;transition:color 200ms,border-color 200ms;"
+         onmouseover="this.style.color='#8e9192';this.style.borderColor='#8e9192'" onmouseout="this.style.color='#fff';this.style.borderColor='#fff'">VIEW ALL</a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 reveal stagger" style="gap:24px;">
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&q=80" alt="Graphic Tee" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#FF3B30;color:#fff;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">🔥 BESTSELLER</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">OVERSIZED GRAPHIC TEE</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹1,499</p>
+      </div>
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1519811076734-4f8da9d1a2d7?w=600&q=80" alt="Cargo Pants" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#FF3B30;color:#fff;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">🔥 BESTSELLER</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">6-POCKET CARGO PANTS</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹2,999</p>
+      </div>
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1504963197557-c19e0a671e27?w=600&q=80" alt="NBA Jersey" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#FF3B30;color:#fff;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">🔥 BESTSELLER</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">NBA JERSEY</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹1,799</p>
+      </div>
+      <div class="prod-card" style="cursor:pointer;">
+        <div style="aspect-ratio:3/4;overflow:hidden;position:relative;background:#201f1f;border-radius:2px;">
+          <img src="https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=600&q=80" alt="Polo Shirt" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 500ms ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+          <span style="position:absolute;top:12px;left:12px;z-index:10;background:#FF3B30;color:#fff;font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">🔥 BESTSELLER</span>
+          <button class="atc-btn">ADD TO CART</button>
+        </div>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;margin-top:24px;">POLO SHIRT</p>
+        <p style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:4px;">₹1,299</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 5: ₹999 DROP BANNER
+═══════════════════════════════════════════════ -->
+<section id="drop999" class="noise-bg" style="padding:96px 0;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;text-align:center;" class="px-5 lg:px-[64px]">
+    <p class="reveal" style="font-size:14px;font-weight:600;color:#FF3B30;letter-spacing:6px;text-transform:uppercase;margin-bottom:16px;">LIMITED TIME DEAL</p>
+    <h2 class="font-heading reveal" style="font-size:clamp(64px,8vw,96px);color:#fff;text-transform:uppercase;line-height:1;margin-bottom:16px;">3 FOR ₹999</h2>
+    <p class="reveal" style="font-size:18px;color:#8e9192;margin-bottom:40px;">Mix &amp; Match any 3 pieces. While stocks last.</p>
+
+    <!-- Countdown -->
+    <div class="reveal" style="display:flex;align-items:flex-start;justify-content:center;gap:16px;margin-bottom:40px;flex-wrap:wrap;">
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:16px 24px;border-radius:2px;min-width:90px;text-align:center;">
+        <div class="font-heading" id="c-days" style="font-size:48px;color:#fff;line-height:1;">02</div>
+        <div style="font-size:11px;color:#8e9192;text-transform:uppercase;letter-spacing:0.15em;margin-top:4px;">DAYS</div>
+      </div>
+      <div class="timer-sep" style="padding-top:16px;">:</div>
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:16px 24px;border-radius:2px;min-width:90px;text-align:center;">
+        <div class="font-heading" id="c-hrs" style="font-size:48px;color:#fff;line-height:1;">14</div>
+        <div style="font-size:11px;color:#8e9192;text-transform:uppercase;letter-spacing:0.15em;margin-top:4px;">HRS</div>
+      </div>
+      <div class="timer-sep" style="padding-top:16px;">:</div>
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:16px 24px;border-radius:2px;min-width:90px;text-align:center;">
+        <div class="font-heading" id="c-mins" style="font-size:48px;color:#fff;line-height:1;">36</div>
+        <div style="font-size:11px;color:#8e9192;text-transform:uppercase;letter-spacing:0.15em;margin-top:4px;">MINS</div>
+      </div>
+      <div class="timer-sep" style="padding-top:16px;">:</div>
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:16px 24px;border-radius:2px;min-width:90px;text-align:center;">
+        <div class="font-heading" id="c-secs" style="font-size:48px;color:#fff;line-height:1;">22</div>
+        <div style="font-size:11px;color:#8e9192;text-transform:uppercase;letter-spacing:0.15em;margin-top:4px;">SECS</div>
+      </div>
+    </div>
+
+    <a href="#" class="reveal" style="display:inline-block;background:#FF3B30;color:#fff;padding:16px 48px;font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:2px;margin-top:32px;transition:background 200ms,transform 100ms;"
+       onmouseover="this.style.background='#e0352a'" onmouseout="this.style.background='#FF3B30'"
+       onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">SHOP THE DROP</a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 6: WHY CHOOSE US
+═══════════════════════════════════════════════ -->
+<section id="why" style="padding:96px 0;background:#111111;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <h2 class="font-heading reveal" style="font-size:48px;color:#fff;text-transform:uppercase;text-align:center;margin-bottom:48px;">WHY CHOOSE US</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 reveal stagger" style="gap:32px;">
+      <!-- Card 1 -->
+      <div style="text-align:center;padding:32px 16px;">
+        <span class="material-symbols-outlined" style="font-size:48px;color:#fff;display:block;margin-bottom:16px;">workspace_premium</span>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.01em;">PREMIUM QUALITY</p>
+        <p style="font-size:16px;color:#8e9192;margin-top:8px;">Handpicked fabrics &amp; premium stitching on every piece</p>
+      </div>
+      <!-- Card 2 -->
+      <div style="text-align:center;padding:32px 16px;">
+        <span class="material-symbols-outlined" style="font-size:48px;color:#fff;display:block;margin-bottom:16px;">local_shipping</span>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.01em;">FAST SHIPPING</p>
+        <p style="font-size:16px;color:#8e9192;margin-top:8px;">PAN India delivery in 3–7 business days</p>
+      </div>
+      <!-- Card 3 -->
+      <div style="text-align:center;padding:32px 16px;">
+        <span class="material-symbols-outlined" style="font-size:48px;color:#fff;display:block;margin-bottom:16px;">lock</span>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.01em;">SECURE PAYMENTS</p>
+        <p style="font-size:16px;color:#8e9192;margin-top:8px;">100% encrypted checkout powered by Cashfree</p>
+      </div>
+      <!-- Card 4 -->
+      <div style="text-align:center;padding:32px 16px;">
+        <span class="material-symbols-outlined" style="font-size:48px;color:#fff;display:block;margin-bottom:16px;">autorenew</span>
+        <p style="font-size:20px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.01em;">EASY RETURNS</p>
+        <p style="font-size:16px;color:#8e9192;margin-top:8px;">Hassle-free 7-day return window, no questions asked</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 7: INSTAGRAM GALLERY
+═══════════════════════════════════════════════ -->
+<section id="instagram" style="padding:96px 0;background:#131313;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <h2 class="font-heading" style="font-size:48px;color:#fff;text-transform:uppercase;">@ESCAPE_CLOTHING17</h2>
+      <p style="font-size:16px;color:#8e9192;margin-top:12px;">Follow us on Instagram for daily drops</p>
+    </div>
+    <!-- Grid 3x2 -->
+    <div class="grid grid-cols-2 md:grid-cols-3 reveal stagger" style="gap:8px;">
+      <div class="ig-cell" style="position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer;border-radius:2px;">
+        <img class="ig-img" src="https://images.unsplash.com/photo-1529139574466-a303027614b3?w=600&q=80" alt="IG 1" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="ig-overlay"><span class="material-symbols-outlined" style="font-size:40px;color:#fff;">photo_camera</span></div>
+      </div>
+      <div class="ig-cell" style="position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer;border-radius:2px;">
+        <img class="ig-img" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="IG 2" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="ig-overlay"><span class="material-symbols-outlined" style="font-size:40px;color:#fff;">photo_camera</span></div>
+      </div>
+      <div class="ig-cell" style="position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer;border-radius:2px;">
+        <img class="ig-img" src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="IG 3" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="ig-overlay"><span class="material-symbols-outlined" style="font-size:40px;color:#fff;">photo_camera</span></div>
+      </div>
+      <div class="ig-cell" style="position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer;border-radius:2px;">
+        <img class="ig-img" src="https://images.unsplash.com/photo-1485462537746-965f33f7f6a7?w=600&q=80" alt="IG 4" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="ig-overlay"><span class="material-symbols-outlined" style="font-size:40px;color:#fff;">photo_camera</span></div>
+      </div>
+      <div class="ig-cell" style="position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer;border-radius:2px;">
+        <img class="ig-img" src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="IG 5" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="ig-overlay"><span class="material-symbols-outlined" style="font-size:40px;color:#fff;">photo_camera</span></div>
+      </div>
+      <div class="ig-cell" style="position:relative;overflow:hidden;aspect-ratio:1/1;cursor:pointer;border-radius:2px;">
+        <img class="ig-img" src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80" alt="IG 6" style="width:100%;height:100%;object-fit:cover;display:block;" />
+        <div class="ig-overlay"><span class="material-symbols-outlined" style="font-size:40px;color:#fff;">photo_camera</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px;" class="reveal">
+      <a href="https://instagram.com/escape_clothing17" target="_blank" style="font-size:14px;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em;text-decoration:none;border-bottom:1px solid #fff;padding-bottom:2px;transition:color 200ms,border-color 200ms;"
+         onmouseover="this.style.color='#8e9192';this.style.borderColor='#8e9192'" onmouseout="this.style.color='#fff';this.style.borderColor='#fff'">FOLLOW ON INSTAGRAM →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 8: CUSTOMER REVIEWS
+═══════════════════════════════════════════════ -->
+<section id="reviews" style="padding:96px 0;background:#111111;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <!-- Header -->
+    <div class="reveal" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:16px;">
+      <h2 class="font-heading" style="font-size:48px;color:#fff;text-transform:uppercase;">WHAT THEY'RE SAYING</h2>
+      <div style="background:#fff;color:#000;padding:8px 16px;border-radius:2px;font-size:14px;font-weight:700;white-space:nowrap;">★ 4.8 / 5 · 200+ Reviews</div>
+    </div>
+    <!-- Scrollable Reviews -->
+    <div class="reviews-track no-scrollbar reveal">
+      <!-- Review 1 -->
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:32px;border-radius:2px;min-width:320px;max-width:340px;flex-shrink:0;">
+        <div style="font-size:18px;color:#fff;letter-spacing:2px;">★★★★★</div>
+        <p style="font-size:16px;color:#C4C7C8;font-style:italic;margin-top:12px;">"Quality is insane for this price. Cargo pants fit perfectly, very sturdy stitching."</p>
+        <p style="font-size:14px;font-weight:600;color:#fff;margin-top:24px;">Rahul M.</p>
+        <p style="font-size:12px;color:#8e9192;margin-top:4px;">Technical Cargo</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+          <span style="font-size:10px;color:#22c55e;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">VERIFIED BUYER</span>
+        </div>
+      </div>
+      <!-- Review 2 -->
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:32px;border-radius:2px;min-width:320px;max-width:340px;flex-shrink:0;">
+        <div style="font-size:18px;color:#fff;letter-spacing:2px;">★★★★★</div>
+        <p style="font-size:16px;color:#C4C7C8;font-style:italic;margin-top:12px;">"Got the 999 drop combo, all 3 tees are premium. Will order again!"</p>
+        <p style="font-size:14px;font-weight:600;color:#fff;margin-top:24px;">Priya K.</p>
+        <p style="font-size:12px;color:#8e9192;margin-top:4px;">₹999 Drop</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+          <span style="font-size:10px;color:#22c55e;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">VERIFIED BUYER</span>
+        </div>
+      </div>
+      <!-- Review 3 -->
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:32px;border-radius:2px;min-width:320px;max-width:340px;flex-shrink:0;">
+        <div style="font-size:18px;color:#fff;letter-spacing:2px;">★★★★★</div>
+        <p style="font-size:16px;color:#C4C7C8;font-style:italic;margin-top:12px;">"Jersey looks exactly like the photos. Great material, fast delivery."</p>
+        <p style="font-size:14px;font-weight:600;color:#fff;margin-top:24px;">Aditya S.</p>
+        <p style="font-size:12px;color:#8e9192;margin-top:4px;">Korean Jersey</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+          <span style="font-size:10px;color:#22c55e;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">VERIFIED BUYER</span>
+        </div>
+      </div>
+      <!-- Review 4 -->
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:32px;border-radius:2px;min-width:320px;max-width:340px;flex-shrink:0;">
+        <div style="font-size:18px;color:#fff;letter-spacing:2px;">★★★★★</div>
+        <p style="font-size:16px;color:#C4C7C8;font-style:italic;margin-top:12px;">"Oversized fit is perfect. Not too baggy, not too fitted. Love it."</p>
+        <p style="font-size:14px;font-weight:600;color:#fff;margin-top:24px;">Sneha R.</p>
+        <p style="font-size:12px;color:#8e9192;margin-top:4px;">Obsidian Hoodie</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+          <span style="font-size:10px;color:#22c55e;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">VERIFIED BUYER</span>
+        </div>
+      </div>
+      <!-- Review 5 -->
+      <div style="background:#1A1A1A;border:1px solid #444748;padding:32px;border-radius:2px;min-width:320px;max-width:340px;flex-shrink:0;">
+        <div style="font-size:18px;color:#fff;letter-spacing:2px;">★★★★★</div>
+        <p style="font-size:16px;color:#C4C7C8;font-style:italic;margin-top:12px;">"Cashfree checkout was smooth. Got delivered in 4 days to Pune."</p>
+        <p style="font-size:14px;font-weight:600;color:#fff;margin-top:24px;">Karthik V.</p>
+        <p style="font-size:12px;color:#8e9192;margin-top:4px;">Graphic Tee</p>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+          <span style="font-size:10px;color:#22c55e;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">VERIFIED BUYER</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 9: NEWSLETTER
+═══════════════════════════════════════════════ -->
+<section id="newsletter" style="padding:96px 0;background:#0A0A0A;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;text-align:center;" class="px-5 lg:px-[64px]">
+    <h2 class="font-heading reveal" style="font-size:clamp(40px,5vw,64px);color:#fff;text-transform:uppercase;line-height:1;margin-bottom:16px;">GET EARLY ACCESS TO DROPS</h2>
+    <p class="reveal" style="font-size:18px;color:#8e9192;margin-bottom:40px;">Join 5,000+ streetwear fans. No spam, only drops.</p>
+    <div class="reveal" style="display:flex;max-width:480px;margin:0 auto;">
+      <input type="email" placeholder="Enter your email"
+             style="flex:1;background:#1A1A1A;border:1px solid #444748;border-right:none;color:#fff;font-family:'Inter',sans-serif;font-size:16px;padding:16px 20px;border-radius:2px 0 0 2px;outline:none;transition:border-color 200ms;" />
+      <button style="background:#fff;color:#000;padding:16px 32px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:none;cursor:pointer;border-radius:0 2px 2px 0;transition:opacity 200ms;white-space:nowrap;"
+              onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">JOIN</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer style="background:#0D0D0D;border-top:1px solid #444748;padding:64px 0 32px;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 64px;" class="px-5 lg:px-[64px]">
+    <div class="grid grid-cols-2 md:grid-cols-5" style="gap:48px;margin-bottom:48px;">
+
+      <!-- Column 1: Brand -->
+      <div class="col-span-2 md:col-span-1">
+        <img src="https://res.cloudinary.com/dsqxboxoc/image/upload/q_auto/f_auto/v1780928834/639473422_17856452319665295_1281961209085143497_n_mmtgqs.jpg"
+             alt="Escape Clothing" style="height:40px;width:40px;object-fit:cover;border-radius:2px;" />
+        <p style="font-size:14px;color:#8e9192;margin-top:12px;">Escape The Ordinary</p>
+        <p style="font-size:14px;color:#8e9192;margin-top:4px;">Premium streetwear for every drop.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;">
+          <span style="background:#1A1A1A;color:#8e9192;font-size:11px;font-weight:600;padding:6px 10px;border-radius:4px;letter-spacing:0.03em;">UPI</span>
+          <span style="background:#1A1A1A;color:#8e9192;font-size:11px;font-weight:600;padding:6px 10px;border-radius:4px;letter-spacing:0.03em;">VISA</span>
+          <span style="background:#1A1A1A;color:#8e9192;font-size:11px;font-weight:600;padding:6px 10px;border-radius:4px;letter-spacing:0.03em;">MASTERCARD</span>
+          <span style="background:#1A1A1A;color:#8e9192;font-size:11px;font-weight:600;padding:6px 10px;border-radius:4px;letter-spacing:0.03em;">RUPAY</span>
+          <span style="background:#1A1A1A;color:#8e9192;font-size:11px;font-weight:600;padding:6px 10px;border-radius:4px;letter-spacing:0.03em;">COD</span>
+        </div>
+      </div>
+
+      <!-- Column 2: Shop -->
+      <div>
+        <p style="font-size:12px;color:#fff;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;">SHOP</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="#" class="footer-link">New Arrivals</a>
+          <a href="#" class="footer-link">Jerseys</a>
+          <a href="#" class="footer-link">Oversized Tees</a>
+          <a href="#" class="footer-link">Shirts</a>
+          <a href="#" class="footer-link">Bottoms</a>
+          <a href="#" class="footer-link" style="color:#FF3B30;">₹999 Drop</a>
+        </div>
+      </div>
+
+      <!-- Column 3: Support -->
+      <div>
+        <p style="font-size:12px;color:#fff;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;">SUPPORT</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="#" class="footer-link">FAQ</a>
+          <a href="#" class="footer-link">Contact Us</a>
+          <a href="#" class="footer-link">Track Order</a>
+          <a href="#" class="footer-link">Size Guide</a>
+        </div>
+      </div>
+
+      <!-- Column 4: Policies -->
+      <div>
+        <p style="font-size:12px;color:#fff;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;">POLICIES</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="#" class="footer-link">Shipping</a>
+          <a href="#" class="footer-link">Returns</a>
+          <a href="#" class="footer-link">Refund</a>
+          <a href="#" class="footer-link">Privacy</a>
+          <a href="#" class="footer-link">Terms &amp; Conditions</a>
+          <a href="#" class="footer-link">Cancellation</a>
+        </div>
+      </div>
+
+      <!-- Column 5: Follow -->
+      <div>
+        <p style="font-size:12px;color:#fff;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;">FOLLOW US</p>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <a href="https://instagram.com/escape_clothing17" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:opacity 200ms;" onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
+          <a href="https://wa.me/918261094774" target="_blank" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:opacity 200ms;" onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            WhatsApp
+          </a>
+          <a href="mailto:escape.clothing17@gmail.com" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:opacity 200ms;" onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div style="border-top:1px solid #444748;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <p style="font-size:14px;color:#8e9192;">© 2025 Escape Clothing. All rights reserved.</p>
+      <p style="font-size:14px;color:#8e9192;">Made with ❤️ in Nagpur</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════
+     FLOATING WHATSAPP BUTTON
+═══════════════════════════════════════════════ -->
+<a id="wa-btn" href="https://wa.me/918261094774?text=Hi%20I%20want%20to%20order%20from%20Escape%20Clothing%20%F0%9F%91%A3" target="_blank" class="pulse-ring">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+  </svg>
+</a>
+
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════ -->
+<script>
+  // ── Scroll Reveal ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ── Countdown Timer ──
+  function getTargetTime() {
+    const stored = localStorage.getItem('ec_drop_target');
+    if (stored) return parseInt(stored);
+    const target = Date.now() + (2 * 86400 + 14 * 3600 + 36 * 60 + 22) * 1000;
+    localStorage.setItem('ec_drop_target', target);
+    return target;
+  }
+  const target = getTargetTime();
+  function pad(n) { return String(Math.max(0,n)).padStart(2,'0'); }
+  function updateTimer() {
+    const diff = Math.max(0, target - Date.now());
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('c-days').textContent = pad(d);
+    document.getElementById('c-hrs').textContent  = pad(h);
+    document.getElementById('c-mins').textContent = pad(m);
+    document.getElementById('c-secs').textContent = pad(s);
+  }
+  updateTimer();
+  setInterval(updateTimer, 1000);
+
+  // ── Header scroll opacity ──
+  window.addEventListener('scroll', () => {
+    const header = document.getElementById('header');
+    if (window.scrollY > 80) {
+      header.style.background = 'rgba(19,19,19,0.95)';
+    } else {
+      header.style.background = 'rgba(19,19,19,0.80)';
+    }
+  });
+</script>
+
+</body>
+</html>
