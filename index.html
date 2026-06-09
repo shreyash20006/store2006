@@ -209,8 +209,8 @@
       <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
         <span class="material-symbols-outlined" style="font-size:24px;">search</span>
       </button>
-      <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
-        <span class="material-symbols-outlined" style="font-size:24px;">person</span>
+      <button id="auth-btn" onclick="handleAuthClick()" style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'" title="Login">
+        <span class="material-symbols-outlined" style="font-size:24px;" id="auth-icon">person</span>
       </button>
       <button style="background:none;border:none;cursor:pointer;color:#fff;opacity:1;transition:opacity 200ms;" class="hidden md:block" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
         <span class="material-symbols-outlined" style="font-size:24px;">favorite</span>
@@ -222,6 +222,22 @@
     </div>
   </div>
 </header>
+
+<!-- Login Modal Overlay -->
+<div id="storeLoginModal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#1A1A1A;border:1px solid #444748;width:100%;max-width:400px;padding:32px;border-radius:2px;position:relative;">
+    <button onclick="closeStoreLogin()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#8e9192;cursor:pointer;">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <h2 class="font-heading" style="font-size:32px;color:#fff;text-align:center;margin-bottom:8px;">WELCOME BACK</h2>
+    <p style="text-align:center;color:#8e9192;font-size:14px;margin-bottom:32px;">Log in to access your orders and wishlist.</p>
+    
+    <button onclick="signInWithGoogle()" style="width:100%;background:#fff;color:#000;padding:12px;border-radius:2px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;border:none;transition:opacity 200ms;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+      <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+  </div>
+</div>
 
 
 <!-- ═══════════════════════════════════════════════
@@ -805,5 +821,56 @@
   });
 </script>
 
+<!-- Supabase Setup -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const supabaseUrl = 'https://cunnehaehvzkprhjqrwx.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1bm5laGFlaHZ6a3ByaGpxcnd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDAxNDIsImV4cCI6MjA5NjU3NjE0Mn0.EDmqQwczUk7PjONlSjTNfstacQf_DZ9R1PQeXVHGCok';
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  
+  // Expose to window so other scripts can access it
+  window.supabaseClient = supabase;
+
+  // --- Auth Logic for Storefront ---
+  let currentUser = null;
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    currentUser = session ? session.user : null;
+    const authIcon = document.getElementById('auth-icon');
+    if (authIcon) {
+      if (currentUser) {
+        authIcon.innerText = 'logout'; // Change icon to logout when logged in
+      } else {
+        authIcon.innerText = 'person';
+      }
+    }
+  });
+
+  function handleAuthClick() {
+    if (currentUser) {
+      // If logged in, clicking the icon logs them out
+      supabase.auth.signOut().then(() => {
+        alert('You have been logged out.');
+      });
+    } else {
+      // If not logged in, open the modal
+      document.getElementById('storeLoginModal').style.display = 'flex';
+    }
+  }
+
+  function closeStoreLogin() {
+    document.getElementById('storeLoginModal').style.display = 'none';
+  }
+
+  async function signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+    if (error) {
+      console.error('Error logging in with Google:', error.message);
+      alert('Login failed. Please make sure Google Auth is configured in Supabase.');
+    }
+  }
+</script>
 </body>
 </html>
