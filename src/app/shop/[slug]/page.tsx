@@ -1,14 +1,23 @@
-import { Star, Minus, Plus, Heart, Truck, ShieldAlert } from "lucide-react";
+"use client";
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+import { use } from "react";
+import { Star, Minus, Plus, Heart, Truck, ShieldAlert } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   // Wait for params in Next.js 15
-  const { slug } = await params;
+  const { slug } = use(params);
 
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
         {/* Image Gallery */}
-        <div className="space-y-4">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="space-y-4"
+        >
           <div className="aspect-[3/4] bg-zinc-900 w-full relative">
              <div className="absolute inset-0 flex items-center justify-center text-zinc-700">Main Product Image</div>
           </div>
@@ -19,10 +28,15 @@ export default async function ProductPage({ params }: { params: { slug: string }
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Product Details */}
-        <div className="flex flex-col">
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-col"
+        >
           <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-tight">Premium Heavyweight Tee</h1>
           
           <div className="flex items-center gap-4 mt-4">
@@ -62,12 +76,20 @@ export default async function ProductPage({ params }: { params: { slug: string }
               <span className="flex-1 text-center font-medium">1</span>
               <button className="w-10 h-full flex items-center justify-center hover:bg-zinc-900 transition-colors"><Plus className="w-4 h-4" /></button>
             </div>
-            <button className="flex-1 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-zinc-200 transition-colors h-14">
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex-1 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-zinc-200 transition-colors h-14"
+            >
               Add to Cart
-            </button>
-            <button className="w-14 h-14 border border-border flex items-center justify-center hover:bg-zinc-900 transition-colors">
+            </motion.button>
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-14 h-14 border border-border flex items-center justify-center hover:bg-zinc-900 transition-colors"
+            >
               <Heart className="w-5 h-5" />
-            </button>
+            </motion.button>
           </div>
 
           <div className="mt-12 space-y-4 border-t border-border pt-8">
@@ -87,7 +109,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
             </div>
           </div>
 
-        </div>
+        </motion.div>
       </div>
     </div>
   );
