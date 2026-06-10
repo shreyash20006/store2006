@@ -206,3 +206,26 @@ CREATE POLICY "Admins manage coupons" ON public.coupons FOR ALL USING (is_admin(
 -- Enable Realtime for relevant tables
 ALTER PUBLICATION supabase_realtime ADD TABLE public.orders;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.profiles;
+
+-- ==========================================
+-- FUTURE: TGPCOP Student Verification System
+-- ==========================================
+
+CREATE TABLE public.student_verifications (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  prn TEXT UNIQUE NOT NULL,
+  student_name TEXT NOT NULL,
+  year TEXT,
+  semester TEXT,
+  branch TEXT DEFAULT 'B.Pharm',
+  verification_status TEXT DEFAULT 'pending' CHECK (verification_status IN ('pending', 'verified', 'rejected', 'coming_soon')),
+  verified_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+-- Future update to the existing profiles table
+-- ALTER TABLE public.profiles 
+-- ADD COLUMN IF NOT EXISTS prn TEXT UNIQUE,
+-- ADD COLUMN IF NOT EXISTS verification_status TEXT DEFAULT 'coming_soon';
